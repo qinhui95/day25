@@ -1,0 +1,102 @@
+<!-- 在页面中显示当前日期及时间，按秒更新
+格式为 YYYY 年 MM 月 DD 日 星期 D HH:mm:ss
+注意位数的补齐，比如：
+-- 假设时间为2008年10月10日星期一的12点12分12秒，显示2008年10月10日星期一 12:12:12
+-- 假设时间为2008年1月1日星期一的3点2分2秒，显示2008年01月01日星期一 03:02:02
+编码过程中，我们希望你注意对函数的封装，尽量让一个函数就做一个事情，而不要把所有的功能、代码揉在一起：
+
+封装一个函数，来根据某个日期返回这一天是星期几
+封装一个函数，把月、日、小时等出现个位数的情况前面补充0，补充为两位，比如1变为01
+封装一个函数，把最后的日期时间，按照要求的格式进行包装
+可能不止上面这些，尽可能地进行功能的解耦和拆解 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+
+    
+</head>
+<body>
+        <p></p>
+        <p></p>
+    <script type="text/javascript">    	
+    	var p1 = document.getElementsByTagName("p")[0];
+    	var p2 = document.getElementsByTagName("p")[1];
+    	setInterval(function(){
+    		t = new Date();
+    		p1.innerHTML = str();
+    	},1000);
+    	setInterval(function(){
+    		t = new Date();
+    		p2.innerHTML = str2();
+    	},1000)
+    	//2008年10月10日星期一 12:12:12
+    	function getWeek(){
+    		var weekday = t.getDay();
+    		var arrWeek = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
+    		return arrWeek[weekday];
+    	}
+    	
+    	//补0 12小时制转24小时制
+    	function turn(t){
+    		var time = t.toLocaleTimeString().substr(2,8);
+    		var timeArr = time.split(":");
+    		if (timeArr[0].length == 1) {
+    			timeArr[0] = 0 + timeArr[0];
+    			console.log(timeArr[0]);
+    		}
+    		if (t.toLocaleTimeString().substr(0,2) == "下午") {
+    			timeArr[0] = Number(timeArr[0]) + 12;
+    		}
+    		return timeArr.join(":");
+    	}
+    	function str(){
+    		var time = turn(t);
+    		var day = t.getDate();
+    		var mon = t.getMonth() + 1;
+    		var year = t.getFullYear();
+    		var week = getWeek();
+    		var string = year + "年" + mon + "月" + day + "日 " + week +"  "+time;
+    		return string;
+    	}
+    	//2008-10-10 Monday 07:10:30 PM
+    	function getWeek2(){
+    		var weekday = t.getDay();
+    		var arrWeek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    		return arrWeek[weekday];
+    	}
+    	
+    	//补0 加AM PM
+    	function turn2(t){
+    		var time = t.toLocaleTimeString().substr(2,8);
+    		var timeArr = time.split(":");
+    		if (timeArr[0].length == 1) {
+    			timeArr[0] = 0 + timeArr[0];
+    			console.log(timeArr[0]);
+    		}
+    		time = timeArr.join(":");
+    		if (t.toLocaleTimeString().substr(0,2) == "上午") {
+    			time = time + "  AM";
+    		} else {
+    			time = time + "  PM";
+    		}
+    		return time;
+    	}
+    	function str2(){
+    		var time = turn2(t);
+    		var day = t.getDate();
+    		var mon = t.getMonth() + 1;
+    		var year = t.getFullYear();
+    		var week = getWeek2();
+    		var string = year + "-" + mon + "-" + day + " " + week +" "+time;
+    		return string;
+    	}
+    </script>
+
+
+
+    
+</body>
+</html>
